@@ -2,11 +2,11 @@
 
 AI for Engineers is an intelligent, MLOps-powered learning assistant built for engineering students and recent graduates. The system uses a custom transformer-based language model to provide step-by-step solutions for engineering problems, emphasizing conceptual understanding over rote memorization.
 
-## The Challenge
+## The Challenge: Rote Memorization
 
 Engineering mathematics demands profound foundational knowledge and conceptual clarity. Current AI tools frequently function as mere high-powered calculators, offering final answers devoid of context. This approach incentivizes rote memorization and restricts the development of genuine problem-solving capabilities.
 
-## Our Solution
+## Our Solution: Conceptual Mastery
 
 Our intelligent learning assistant serves as a virtual lecturer that:
 - Deconstructs complex mathematical problems into manageable stages
@@ -37,6 +37,12 @@ Built from scratch using TensorFlow/Keras with:
 - Real-time communication with backend API
 - Error handling and user feedback
 
+### Adaptive Learning Features
+- Dynamic flashcards and personalized quizzes
+- Spaced-repetition learning algorithms
+- Multi-profile skill analytics and progress tracking
+- Continuous retraining with user feedback
+
 ## Technical Architecture
 
 ### Model Architecture
@@ -59,6 +65,15 @@ Built from scratch using TensorFlow/Keras with:
 - JSON-based training data format
 - Text preprocessing and tokenization
 - Sequence padding and batch processing
+
+## Competitive Advantage
+
+| Feature | Conventional Solvers | Generic LLM Chatbots | AI for Engineers |
+|---------|---------------------|---------------------|------------------|
+| Provides Final Answers | ✓ Yes | ✓ Yes | ✓ Yes |
+| Step-by-Step Methodology | ✗ No | Often Flawed | ✓ Mathematically Verified |
+| Adaptive Revision & Flashcards | ✗ No | ✗ No | ✓ Core Feature |
+| Multi-Profile Skill Analytics | ✗ No | ✗ No | ✓ Integrated Dashboard |
 
 ## Project Structure
 
@@ -100,12 +115,6 @@ AI-For-Engineers/
 ```
 
 ## Getting Started
-
-### Prerequisites
-- Python 3.8+
-- Node.js 14+
-- TensorFlow 2.x
-- 4GB+ RAM for model training
 
 ### Quick Start
 
@@ -248,6 +257,9 @@ This demonstrates the complete ML pipeline - the model needs more training data 
 3. Add support for mathematical notation rendering
 4. Multi-modal support for diagrams and equations
 5. Mobile-friendly interface and offline mode
+6. OCR pipeline to support scanned or handwritten problems
+7. Voice-based query input and spoken explanations
+8. Dashboard for analytics, dataset drift detection and retraining triggers
 
 ## Team
 
@@ -259,6 +271,14 @@ This demonstrates the complete ML pipeline - the model needs more training data 
 **Under the guidance of:**  
 **A Naga Kalyani** - Assistant Professor, Dept of CSE (AI&ML)  
 BVRIT Hyderabad College of Engineering for Women
+
+## Development Workflow
+
+1. Create a feature branch for each task using a descriptive name
+2. Work locally and keep commits small and meaningful
+3. Push the branch and open a pull request to main for review
+4. Ensure tests run in CI and address review comments before merging
+5. Avoid pushing directly to main
 
 ## License
 
@@ -274,4 +294,6 @@ Use the GitHub Issues section to report bugs, request features, or suggest new d
 
 ---
 
-Building Better Engineers: Our ultimate goal is to shift the educational paradigm away from mere answer-finding towards profound conceptual understanding, equipping the next generation with genuine analytical capabilities.
+## Building Better Engineers
+
+Our ultimate goal is to shift the educational paradigm away from mere answer-finding towards profound conceptual understanding, equipping the next generation with genuine analytical capabilities.
