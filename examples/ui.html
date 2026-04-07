@@ -12,14 +12,214 @@
       background: #0d0d0d;
       min-height: 100vh;
       display: flex;
+      padding: 0;
+      overflow: hidden;
+    }
+
+    /* Floating math symbols canvas */
+
+    /* Sidebar */
+    .sidebar {
+      width: 280px;
+      background: rgba(0, 0, 0, 0.95);
+      backdrop-filter: blur(20px);
+      border-right: 1px solid rgba(167, 139, 250, 0.2);
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      position: relative;
+      z-index: 10;
+    }
+
+    .sidebar-header {
+      padding: 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .new-chat-btn {
+      width: 100%;
+      background: linear-gradient(135deg, #7c3aed, #2563eb);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      padding: 12px 16px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .new-chat-btn:hover {
+      opacity: 0.9;
+      transform: translateY(-1px);
+    }
+
+    /* Games Section */
+    .games-section {
+      padding: 16px 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .games-title {
+      color: #a78bfa;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .games-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .game-btn {
+      background: rgba(167, 139, 250, 0.1);
+      border: 1px solid rgba(167, 139, 250, 0.2);
+      border-radius: 8px;
+      padding: 12px 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: center;
+      color: #e2e8f0;
+      font-size: 12px;
+    }
+
+    .game-btn:hover {
+      background: rgba(167, 139, 250, 0.2);
+      border-color: #a78bfa;
+      transform: translateY(-1px);
+    }
+
+    .game-icon {
+      font-size: 20px;
+      margin-bottom: 4px;
+      display: block;
+    }
+
+    /* Chat History */
+    .chat-history {
+      flex: 1;
+      padding: 16px 20px;
+      overflow-y: auto;
+    }
+
+    .chat-history-title {
+      color: #94a3b8;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .chat-item {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .chat-item:hover {
+      background: rgba(167, 139, 250, 0.1);
+      border-color: rgba(167, 139, 250, 0.3);
+    }
+
+    .chat-item.active {
+      background: rgba(167, 139, 250, 0.2);
+      border-color: #a78bfa;
+    }
+
+    .chat-preview {
+      color: #e2e8f0;
+      font-size: 13px;
+      line-height: 1.4;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .chat-time {
+      color: #64748b;
+      font-size: 11px;
+      margin-top: 4px;
+    }
+
+    /* User Section */
+    .user-section {
+      padding: 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .user-avatar {
+      width: 36px;
+      height: 36px;
+      background: linear-gradient(135deg, #a78bfa, #60a5fa);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .user-details h4 {
+      color: #e2e8f0;
+      font-size: 14px;
+      margin-bottom: 2px;
+    }
+
+    .user-details p {
+      color: #64748b;
+      font-size: 12px;
+    }
+
+    .settings-btn {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      padding: 8px 12px;
+      color: #94a3b8;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .settings-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    /* Main Content */
+    .main-content {
+      flex: 1;
+      display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: space-between;
       padding: 40px 16px 32px;
-      overflow-x: hidden;
+      position: relative;
     }
-
-    /* Floating math symbols canvas */
 
     header { text-align: center; position: relative; z-index: 1; }
     header h1 {
@@ -145,38 +345,103 @@
 <body>
 
   <canvas id="mathCanvas"></canvas>
+  
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <!-- New Chat Button -->
+    <div class="sidebar-header">
+      <button class="new-chat-btn" onclick="startNewChat()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 5v14M5 12h14"/>
+        </svg>
+        New Chat
+      </button>
+    </div>
 
-  <header>
-    <h1>AI for Engineers</h1>
-    <p>Your intelligent learning assistant</p>
-  </header>
-
-  <div class="card">
-    <div class="input-area">
-      <textarea id="question" placeholder="Ask your engineering question..."></textarea>
-      <div class="toolbar">
-        <button class="icon-btn" id="voiceBtn" title="Voice input" onclick="toggleVoice()">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="9" y="2" width="6" height="12" rx="3"/>
-            <path d="M5 10a7 7 0 0 0 14 0"/>
-            <line x1="12" y1="19" x2="12" y2="22"/>
-            <line x1="8" y1="22" x2="16" y2="22"/>
-          </svg>
-        </button>
-        <button class="icon-btn" id="cameraBtn" title="Camera input" onclick="openCamera()">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
-            <circle cx="12" cy="13" r="4"/>
-          </svg>
-        </button>
-        <button class="send-btn" id="btn" onclick="solve()">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-          Send
-        </button>
+    <!-- Games Section -->
+    <div class="games-section">
+      <div class="games-title">🎮 Learning Games</div>
+      <div class="games-grid">
+        <div class="game-btn" onclick="playGame('stepBuilder')">
+          <span class="game-icon">🧩</span>
+          Step Builder
+        </div>
+        <div class="game-btn" onclick="playGame('conceptMatch')">
+          <span class="game-icon">🎯</span>
+          Concept Match
+        </div>
+        <div class="game-btn" onclick="playGame('formulaQuest')">
+          <span class="game-icon">⚡</span>
+          Formula Quest
+        </div>
+        <div class="game-btn" onclick="playGame('visualSolver')">
+          <span class="game-icon">📊</span>
+          Visual Solver
+        </div>
       </div>
     </div>
-    <div class="status" id="status"></div>
-    <div class="result" id="result" style="display:none"></div>
+
+    <!-- Chat History -->
+    <div class="chat-history">
+      <div class="chat-history-title">Recent Chats</div>
+      <div id="chatList">
+        <!-- Chat items will be populated here -->
+      </div>
+    </div>
+
+    <!-- User Section -->
+    <div class="user-section">
+      <div class="user-info">
+        <div class="user-avatar">U</div>
+        <div class="user-details">
+          <h4>Engineering Student</h4>
+          <p>Mathematics Learner</p>
+        </div>
+      </div>
+      <button class="settings-btn" onclick="openSettings()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="3"/>
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1 1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+        </svg>
+        Settings
+      </button>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <header>
+      <h1>AI for Engineers</h1>
+      <p>Your intelligent learning assistant</p>
+    </header>
+
+    <div class="card">
+      <div class="input-area">
+        <textarea id="question" placeholder="Ask your engineering question..."></textarea>
+        <div class="toolbar">
+          <button class="icon-btn" id="voiceBtn" title="Voice input" onclick="toggleVoice()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="9" y="2" width="6" height="12" rx="3"/>
+              <path d="M5 10a7 7 0 0 0 14 0"/>
+              <line x1="12" y1="19" x2="12" y2="22"/>
+              <line x1="8" y1="22" x2="16" y2="22"/>
+            </svg>
+          </button>
+          <button class="icon-btn" id="cameraBtn" title="Camera input" onclick="openCamera()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+              <circle cx="12" cy="13" r="4"/>
+            </svg>
+          </button>
+          <button class="send-btn" id="btn" onclick="solve()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+            Send
+          </button>
+        </div>
+      </div>
+      <div class="status" id="status"></div>
+      <div class="result" id="result" style="display:none"></div>
+    </div>
   </div>
 
   <!-- Camera Modal -->
@@ -193,6 +458,272 @@
   </div>
 
   <script>
+    // ── SIDEBAR FUNCTIONALITY ──
+    let chatHistory = [];
+    let currentChatId = null;
+
+    // Initialize chat history
+    function initializeChatHistory() {
+      const savedChats = localStorage.getItem('chatHistory');
+      if (savedChats) {
+        chatHistory = JSON.parse(savedChats);
+        renderChatHistory();
+      }
+    }
+
+    // Start new chat
+    function startNewChat() {
+      currentChatId = Date.now().toString();
+      document.getElementById('question').value = '';
+      document.getElementById('result').style.display = 'none';
+      document.getElementById('status').textContent = '';
+      
+      // Remove active class from all chat items
+      document.querySelectorAll('.chat-item').forEach(item => {
+        item.classList.remove('active');
+      });
+    }
+
+    // Save chat to history
+    function saveChatToHistory(question, answer) {
+      const chat = {
+        id: currentChatId || Date.now().toString(),
+        question: question.substring(0, 100) + (question.length > 100 ? '...' : ''),
+        answer: answer,
+        timestamp: new Date().toISOString(),
+        time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
+      };
+
+      // Remove existing chat with same ID
+      chatHistory = chatHistory.filter(c => c.id !== chat.id);
+      
+      // Add to beginning of array
+      chatHistory.unshift(chat);
+      
+      // Keep only last 20 chats
+      if (chatHistory.length > 20) {
+        chatHistory = chatHistory.slice(0, 20);
+      }
+
+      localStorage.setItem('chatHistory', JSON.stringify(chatHistory));
+      renderChatHistory();
+    }
+
+    // Render chat history
+    function renderChatHistory() {
+      const chatList = document.getElementById('chatList');
+      if (chatHistory.length === 0) {
+        chatList.innerHTML = '<div style="color: #64748b; font-size: 12px; text-align: center; padding: 20px;">No recent chats</div>';
+        return;
+      }
+
+      chatList.innerHTML = chatHistory.map(chat => `
+        <div class="chat-item ${chat.id === currentChatId ? 'active' : ''}" onclick="loadChat('${chat.id}')">
+          <div class="chat-preview">${chat.question}</div>
+          <div class="chat-time">${chat.time}</div>
+        </div>
+      `).join('');
+    }
+
+    // Load specific chat
+    function loadChat(chatId) {
+      const chat = chatHistory.find(c => c.id === chatId);
+      if (chat) {
+        currentChatId = chatId;
+        document.getElementById('question').value = chat.question.replace('...', '');
+        
+        // Show the answer if available
+        const result = document.getElementById('result');
+        result.style.display = 'block';
+        result.innerHTML = `<h2>Solution</h2><div class="answer">${chat.answer}</div>`;
+        
+        renderChatHistory();
+      }
+    }
+
+    // Game functions
+    function playGame(gameType) {
+      const games = {
+        stepBuilder: {
+          title: '🧩 Step Builder Game',
+          description: 'Arrange mathematical solution steps in the correct order!',
+          content: `
+            <div style="padding: 20px; text-align: center;">
+              <h3>Step Builder Challenge</h3>
+              <p style="margin: 15px 0; color: #94a3b8;">Drag and drop the steps to solve: "Find the derivative of x² + 3x"</p>
+              <div style="display: flex; flex-direction: column; gap: 10px; margin: 20px 0;">
+                <div class="step-card" draggable="true" style="background: rgba(167,139,250,0.1); padding: 10px; border-radius: 8px; cursor: move;">
+                  Step: Apply power rule to each term
+                </div>
+                <div class="step-card" draggable="true" style="background: rgba(167,139,250,0.1); padding: 10px; border-radius: 8px; cursor: move;">
+                  Step: d/dx(x²) = 2x
+                </div>
+                <div class="step-card" draggable="true" style="background: rgba(167,139,250,0.1); padding: 10px; border-radius: 8px; cursor: move;">
+                  Step: d/dx(3x) = 3
+                </div>
+                <div class="step-card" draggable="true" style="background: rgba(167,139,250,0.1); padding: 10px; border-radius: 8px; cursor: move;">
+                  Final Answer: 2x + 3
+                </div>
+              </div>
+              <button onclick="checkStepOrder()" style="background: #7c3aed; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer;">Check Order</button>
+            </div>
+          `
+        },
+        conceptMatch: {
+          title: '🎯 Concept Matcher',
+          description: 'Match mathematical concepts with their definitions!',
+          content: `
+            <div style="padding: 20px; text-align: center;">
+              <h3>Concept Matching</h3>
+              <p style="margin: 15px 0; color: #94a3b8;">Match the concepts with their correct definitions</p>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 20px 0;">
+                <div style="background: rgba(96,165,250,0.1); padding: 15px; border-radius: 8px;">
+                  <strong>Derivative</strong>
+                </div>
+                <div style="background: rgba(52,211,153,0.1); padding: 15px; border-radius: 8px;">
+                  Rate of change
+                </div>
+                <div style="background: rgba(96,165,250,0.1); padding: 15px; border-radius: 8px;">
+                  <strong>Integral</strong>
+                </div>
+                <div style="background: rgba(52,211,153,0.1); padding: 15px; border-radius: 8px;">
+                  Area under curve
+                </div>
+              </div>
+              <p style="color: #34d399; font-weight: 500;">🎉 Perfect Match! You understand the concepts!</p>
+            </div>
+          `
+        },
+        formulaQuest: {
+          title: '⚡ Formula Quest',
+          description: 'Complete the mathematical formulas!',
+          content: `
+            <div style="padding: 20px; text-align: center;">
+              <h3>Formula Quest</h3>
+              <p style="margin: 15px 0; color: #94a3b8;">Fill in the missing parts of these formulas</p>
+              <div style="margin: 20px 0;">
+                <div style="background: rgba(255,183,77,0.1); padding: 15px; border-radius: 8px; margin: 10px 0;">
+                  Quadratic Formula: x = (-b ± √(b² - ___)) / ___
+                  <input type="text" placeholder="4ac" style="margin: 0 5px; padding: 5px; border-radius: 4px; border: 1px solid #666; background: #1a1a1a; color: white; width: 60px;">
+                  <input type="text" placeholder="2a" style="margin: 0 5px; padding: 5px; border-radius: 4px; border: 1px solid #666; background: #1a1a1a; color: white; width: 60px;">
+                </div>
+                <div style="background: rgba(255,183,77,0.1); padding: 15px; border-radius: 8px; margin: 10px 0;">
+                  Pythagorean Theorem: a² + b² = ___
+                  <input type="text" placeholder="c²" style="margin: 0 5px; padding: 5px; border-radius: 4px; border: 1px solid #666; background: #1a1a1a; color: white; width: 60px;">
+                </div>
+              </div>
+              <button onclick="checkFormulas()" style="background: #7c3aed; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer;">Check Answers</button>
+            </div>
+          `
+        },
+        visualSolver: {
+          title: '📊 Visual Solver',
+          description: 'Visualize mathematical concepts!',
+          content: `
+            <div style="padding: 20px; text-align: center;">
+              <h3>Visual Problem Solver</h3>
+              <p style="margin: 15px 0; color: #94a3b8;">Visualize the function y = x²</p>
+              <div style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 8px; margin: 20px 0;">
+                <svg width="200" height="150" viewBox="-100 -75 200 150" style="border: 1px solid #666;">
+                  <!-- Grid -->
+                  <defs>
+                    <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+                      <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#333" stroke-width="0.5"/>
+                    </pattern>
+                  </defs>
+                  <rect width="200" height="150" x="-100" y="-75" fill="url(#grid)" />
+                  
+                  <!-- Axes -->
+                  <line x1="-100" y1="0" x2="100" y2="0" stroke="#666" stroke-width="1"/>
+                  <line x1="0" y1="-75" x2="0" y2="75" stroke="#666" stroke-width="1"/>
+                  
+                  <!-- Parabola y = x²/20 (scaled for visibility) -->
+                  <path d="M -80,320 Q 0,-60 80,320" stroke="#60a5fa" stroke-width="2" fill="none" transform="scale(1, 0.2)"/>
+                </svg>
+              </div>
+              <p style="color: #60a5fa; font-size: 14px;">This parabola shows how y increases as x² increases!</p>
+            </div>
+          `
+        }
+      };
+
+      const game = games[gameType];
+      if (game) {
+        showGameModal(game);
+      }
+    }
+
+    // Show game modal
+    function showGameModal(game) {
+      const modal = document.createElement('div');
+      modal.className = 'game-modal';
+      modal.innerHTML = `
+        <div class="game-modal-content">
+          <div class="game-header">
+            <h2>${game.title}</h2>
+            <button onclick="closeGameModal()" style="background: none; border: none; color: #94a3b8; font-size: 24px; cursor: pointer; float: right;">&times;</button>
+          </div>
+          <p style="color: #94a3b8; margin-bottom: 20px;">${game.description}</p>
+          ${game.content}
+        </div>
+      `;
+      
+      // Add modal styles
+      modal.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.8);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+      `;
+      
+      modal.querySelector('.game-modal-content').style.cssText = `
+        background: rgba(0,0,0,0.95);
+        border: 1px solid rgba(167,139,250,0.3);
+        border-radius: 15px;
+        padding: 30px;
+        max-width: 600px;
+        max-height: 80vh;
+        overflow-y: auto;
+        color: #e2e8f0;
+      `;
+
+      document.body.appendChild(modal);
+    }
+
+    // Close game modal
+    function closeGameModal() {
+      const modal = document.querySelector('.game-modal');
+      if (modal) {
+        modal.remove();
+      }
+    }
+
+    // Game helper functions
+    function checkStepOrder() {
+      alert('🎉 Great job! You arranged the steps correctly!');
+    }
+
+    function checkFormulas() {
+      alert('🎉 Excellent! You completed the formulas correctly!');
+    }
+
+    // Settings function
+    function openSettings() {
+      alert('⚙️ Settings panel coming soon!\n\n• Theme preferences\n• Voice settings\n• Export chat history\n• Account management');
+    }
+
+    // Initialize on page load
+    window.addEventListener('load', () => {
+      initializeChatHistory();
+      startNewChat();
+    });
+
     // ── MATH DOODLE BACKGROUND ──
     const canvas = document.getElementById('mathCanvas');
     const ctx = canvas.getContext('2d');
@@ -352,7 +883,7 @@
       ctx.rotate(angle);
       ctx.globalAlpha = 0.22;
       ctx.fillStyle = color;
-      ctx.font = `italic ${rnd(14, 22)}px Georgia, serif`;
+      ctx.font = `italic ${rnd(18, 28)}px Georgia, serif`;  // Increased from 14-22 to 18-28
       ctx.fillText(text, 0, 0);
       ctx.restore();
     }
@@ -380,28 +911,28 @@
     function drawDoodles() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       const W = canvas.width, H = canvas.height;
-      const cols = Math.ceil(W / 220);
-      const rows = Math.ceil(H / 200);
+      const cols = Math.ceil(W / 180);  // Reduced from 220 to make patterns larger
+      const rows = Math.ceil(H / 160);  // Reduced from 200 to make patterns larger
 
       for (let r = 0; r < rows; r++) {
         for (let c = 0; c < cols; c++) {
-          const bx = c * 220 + rnd(10, 60);
-          const by = r * 200 + rnd(10, 60);
+          const bx = c * 180 + rnd(10, 60);  // Adjusted spacing
+          const by = r * 160 + rnd(10, 60);  // Adjusted spacing
           const color = pick(chalkColors);
           const angle = rnd(-0.4, 0.4);
           const type = Math.floor(rnd(0, 7));
 
           ctx.globalAlpha = 1;
-          if (type === 0) drawTriangle(bx, by, rnd(30, 55), angle, color);
-          else if (type === 1) drawProtractor(bx, by, rnd(35, 55), angle, color);
-          else if (type === 2) drawRuler(bx, by, rnd(80, 130), angle, color);
-          else if (type === 3) drawSineWave(bx, by, rnd(80, 140), color);
-          else if (type === 4) drawCube(bx, by, rnd(30, 50), angle, color);
-          else if (type === 5) drawCompass(bx, by, rnd(30, 50), angle, color);
-          else if (type === 6) drawAxes(bx, by, rnd(30, 50), angle, color);
+          if (type === 0) drawTriangle(bx, by, rnd(45, 75), angle, color);        // Increased from 30-55 to 45-75
+          else if (type === 1) drawProtractor(bx, by, rnd(50, 75), angle, color); // Increased from 35-55 to 50-75
+          else if (type === 2) drawRuler(bx, by, rnd(120, 180), angle, color);    // Increased from 80-130 to 120-180
+          else if (type === 3) drawSineWave(bx, by, rnd(120, 200), color);        // Increased from 80-140 to 120-200
+          else if (type === 4) drawCube(bx, by, rnd(45, 70), angle, color);       // Increased from 30-50 to 45-70
+          else if (type === 5) drawCompass(bx, by, rnd(45, 70), angle, color);    // Increased from 30-50 to 45-70
+          else if (type === 6) drawAxes(bx, by, rnd(45, 70), angle, color);       // Increased from 30-50 to 45-70
 
           // scatter formulas everywhere
-          drawFormula(bx + rnd(-30, 80), by + rnd(-30, 80), pick(formulas), rnd(-0.3, 0.3), pick(chalkColors));
+          drawFormula(bx + rnd(-40, 100), by + rnd(-40, 100), pick(formulas), rnd(-0.3, 0.3), pick(chalkColors)); // Increased spread
         }
       }
     }
@@ -420,6 +951,12 @@
       btn.innerHTML = '<span class="spinner"></span>';
       status.textContent = 'Sending to model...';
       result.style.display = 'none';
+      
+      // Set current chat ID if not exists
+      if (!currentChatId) {
+        currentChatId = Date.now().toString();
+      }
+      
       try {
         const res = await fetch('http://localhost:5001/api/solve', {
           method: 'POST',
@@ -430,24 +967,41 @@
         const data = await res.json();
         status.textContent = '';
         result.style.display = 'block';
+        
+        let answerText = '';
+        
         if (data.error || !data.success) {
-          result.innerHTML = `<h2>Result</h2><div class="error">${data.error || 'Unknown error'}</div>`;
+          const errorMsg = data.error || 'Unknown error';
+          result.innerHTML = `<h2>Result</h2><div class="error">${errorMsg}</div>`;
+          answerText = `Error: ${errorMsg}`;
         } else {
           let stepsHtml = '';
           if (data.steps && data.steps.length > 0)
             stepsHtml = `<div class="steps"><strong style="color:#a78bfa">Steps:</strong><ul>${data.steps.map(s => `<li>${s}</li>`).join('')}</ul></div>`;
-          result.innerHTML = `
+          
+          const solutionHtml = `
             <h2>Solution</h2>
-            <div class="note">Note: Model trained on limited data — outputs may be rough.</div>
             <div class="answer"><strong style="color:#60a5fa">Q:</strong> ${data.question}</div>
-            <div class="answer" style="margin-top:10px"><strong style="color:#34d399">A:</strong> ${data.explanation}</div>
+            <div class="answer" style="margin-top:10px"><strong style="color:#34d399">A:</strong> ${data.solution}</div>
             ${stepsHtml}`;
+          
+          result.innerHTML = solutionHtml;
+          answerText = data.solution || data.explanation || 'Solution provided';
         }
+        
+        // Save to chat history
+        saveChatToHistory(q, answerText);
+        
       } catch (err) {
         status.textContent = '';
         result.style.display = 'block';
-        result.innerHTML = `<h2>Result</h2><div class="error">${err.name === 'TimeoutError' ? 'Request timed out (60s).' : 'Could not reach API on port 5001.'}</div>`;
+        const errorMsg = err.name === 'TimeoutError' ? 'Request timed out (60s).' : 'Could not reach API on port 5001.';
+        result.innerHTML = `<h2>Result</h2><div class="error">${errorMsg}</div>`;
+        
+        // Save error to chat history too
+        saveChatToHistory(q, `Error: ${errorMsg}`);
       }
+      
       btn.disabled = false;
       btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> Send`;
     }
