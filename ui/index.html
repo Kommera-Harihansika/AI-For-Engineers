@@ -715,7 +715,182 @@
 
     // Settings function
     function openSettings() {
-      alert('⚙️ Settings panel coming soon!\n\n• Theme preferences\n• Voice settings\n• Export chat history\n• Account management');
+      const modal = document.createElement('div');
+      modal.className = 'settings-modal';
+      modal.innerHTML = `
+        <div class="settings-modal-content">
+          <div class="settings-header">
+            <h2>⚙️ Settings</h2>
+            <button onclick="closeSettingsModal()" style="background: none; border: none; color: #94a3b8; font-size: 24px; cursor: pointer; float: right;">&times;</button>
+          </div>
+          
+          <div class="settings-section">
+            <h3>🤖 AI Configuration</h3>
+            <p style="color: #94a3b8; margin-bottom: 15px;">Configure Google Gemini API for enhanced mathematical reasoning</p>
+            
+            <div class="api-status" id="apiStatus">
+              <span style="color: #f87171;">⚠️ AI Not Configured</span>
+            </div>
+            
+            <div style="margin: 15px 0;">
+              <label style="color: #e2e8f0; display: block; margin-bottom: 5px;">Google Gemini API Key:</label>
+              <input type="password" id="apiKeyInput" placeholder="Enter your Gemini API key..." 
+                     style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #666; background: #1a1a1a; color: white;">
+            </div>
+            
+            <button onclick="configureAI()" id="configureBtn" 
+                    style="background: #7c3aed; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; margin-right: 10px;">
+              Configure AI
+            </button>
+            
+            <button onclick="checkAIStatus()" 
+                    style="background: #374151; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer;">
+              Check Status
+            </button>
+          </div>
+          
+          <div class="settings-section" style="margin-top: 30px;">
+            <h3>📊 Application Info</h3>
+            <p style="color: #94a3b8;">
+              • Enhanced Mathematical Reasoning<br>
+              • Interactive Learning Games<br>
+              • Voice Input & Camera Support<br>
+              • Persistent Chat History<br>
+              • M1-M4 Engineering Mathematics
+            </p>
+          </div>
+          
+          <div class="settings-section" style="margin-top: 20px;">
+            <button onclick="exportChatHistory()" 
+                    style="background: #059669; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; margin-right: 10px;">
+              📥 Export Chat History
+            </button>
+            
+            <button onclick="clearChatHistory()" 
+                    style="background: #dc2626; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer;">
+              🗑️ Clear History
+            </button>
+          </div>
+        </div>
+      `;
+      
+      // Add modal styles
+      modal.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.8);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+      `;
+      
+      modal.querySelector('.settings-modal-content').style.cssText = `
+        background: rgba(0,0,0,0.95);
+        border: 1px solid rgba(167,139,250,0.3);
+        border-radius: 15px;
+        padding: 30px;
+        max-width: 600px;
+        max-height: 80vh;
+        overflow-y: auto;
+        color: #e2e8f0;
+        width: 90%;
+      `;
+
+      document.body.appendChild(modal);
+      
+      // Check AI status on open
+      checkAIStatus();
+    }
+
+    // Close settings modal
+    function closeSettingsModal() {
+      const modal = document.querySelector('.settings-modal');
+      if (modal) {
+        modal.remove();
+      }
+    }
+
+    // Configure AI API
+    async function configureAI() {
+      const apiKey = document.getElementById('apiKeyInput').value.trim();
+      const btn = document.getElementById('configureBtn');
+      const status = document.getElementById('apiStatus');
+      
+      if (!apiKey) {
+        alert('Please enter your Gemini API key');
+        return;
+      }
+      
+      btn.disabled = true;
+      btn.textContent = 'Configuring...';
+      
+      try {
+        const response = await fetch('/api/configure-ai', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ api_key: apiKey })
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+          status.innerHTML = '<span style="color: #34d399;">✅ AI Configured Successfully</span>';
+          alert('🎉 AI configured successfully! You can now ask any mathematical question.');
+        } else {
+          status.innerHTML = '<span style="color: #f87171;">❌ Configuration Failed</span>';
+          alert('❌ Configuration failed: ' + result.error);
+        }
+      } catch (error) {
+        status.innerHTML = '<span style="color: #f87171;">❌ Connection Error</span>';
+        alert('❌ Error configuring AI: ' + error.message);
+      }
+      
+      btn.disabled = false;
+      btn.textContent = 'Configure AI';
+    }
+
+    // Check AI status
+    async function checkAIStatus() {
+      const status = document.getElementById('apiStatus');
+      
+      try {
+        const response = await fetch('/api/ai-status');
+        const result = await response.json();
+        
+        if (result.ai_enabled) {
+          status.innerHTML = '<span style="color: #34d399;">✅ AI Enabled - Advanced reasoning available</span>';
+        } else {
+          status.innerHTML = '<span style="color: #f87171;">⚠️ AI Not Configured - Limited to built-in solutions</span>';
+        }
+      } catch (error) {
+        status.innerHTML = '<span style="color: #f87171;">❌ Status Check Failed</span>';
+      }
+    }
+
+    // Export chat history
+    function exportChatHistory() {
+      const data = JSON.stringify(chatHistory, null, 2);
+      const blob = new Blob([data], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `ai-for-engineers-chat-history-${new Date().toISOString().split('T')[0]}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    // Clear chat history
+    function clearChatHistory() {
+      if (confirm('Are you sure you want to clear all chat history? This cannot be undone.')) {
+        chatHistory = [];
+        localStorage.removeItem('chatHistory');
+        renderChatHistory();
+        alert('Chat history cleared successfully.');
+      }
     }
 
     // Initialize on page load
@@ -995,7 +1170,7 @@
       } catch (err) {
         status.textContent = '';
         result.style.display = 'block';
-        const errorMsg = err.name === 'TimeoutError' ? 'Request timed out (60s).' : 'Could not reach API on port 5001.';
+        const errorMsg = err.name === 'TimeoutError' ? 'Request timed out (60s). Please try again.' : 'Could not reach the server. Make sure app.py is running.';
         result.innerHTML = `<h2>Result</h2><div class="error">${errorMsg}</div>`;
         
         // Save error to chat history too
