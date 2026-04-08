@@ -238,6 +238,16 @@ def health_check():
         'message': 'UI and API running on single port',
         'features': ['Enhanced Mathematical Reasoning', 'Interactive Learning Games', 'ChatGPT-like Interface']
     })
+@app.route("/settings/<email>", methods=["POST", "GET"])
+def settings(email):
+    if request.method == "POST":
+        data = request.json
+        users[email + "_settings"] = data
+        return jsonify({"message": "Settings updated"}), 200
+
+    if request.method == "GET":
+        settings = users.get(email + "_settings", {"theme": "light", "notifications": True})
+        return jsonify(settings)
 
 @app.route('/api/solve', methods=['POST'])
 def solve_problem():
