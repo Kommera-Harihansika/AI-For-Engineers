@@ -7,6 +7,9 @@ function App() {
   const [question, setQuestion] = useState('');
   const [answer, setAnswer] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [user, setUser] = useState("Engineering Student");  // or however you track login
+const [theme, setTheme] = useState("light");              // for theme switching
+
   const [showGames, setShowGames] = useState(false);
   const [isRecording, setIsRecording] = useState(false);
   const [mediaRecorder, setMediaRecorder] = useState(null);
@@ -133,6 +136,7 @@ function App() {
   if (showGames) {
     return (
       <div className="games-modal">
+       <Settings user={user} setTheme={setTheme} /> 
         <div className="games-content">
           <h2>🎮 Interactive Learning Games</h2>
           <p>Choose a game to help you understand mathematical concepts better!</p>
@@ -173,7 +177,7 @@ function App() {
 
   return (
     <div className="app">
-        <Settings user={user} />
+         <Settings user={user} setTheme={setTheme} /> 
 
       <header>
         <h1>🧮 AI for Engineers</h1>
