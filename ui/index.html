@@ -391,20 +391,20 @@
 
     <!-- User Section -->
     <div class="user-section">
-      <div class="user-info">
-        <div class="user-avatar">U</div>
+      <div class="user-info" onclick="openProfilePanel()" style="cursor:pointer;" title="View profile">
+        <div class="user-avatar" id="sidebarAvatar">E</div>
         <div class="user-details">
-          <h4>Engineering Student</h4>
-          <p>Mathematics Learner</p>
+          <h4 id="sidebarName">Engineering Student</h4>
+          <p id="sidebarRole">Mathematics Learner</p>
         </div>
       </div>
-      <button class="settings-btn" onclick="openSettings()">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <circle cx="12" cy="12" r="3"/>
-          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1 1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
-        </svg>
-        Settings
-      </button>
+      <div style="display:flex;gap:6px;">
+        <button class="settings-btn" onclick="openSwitchUser()" style="flex:1;">👤 Switch</button>
+        <button class="settings-btn" onclick="openSettings()" style="flex:1;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1 1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          Settings
+        </button>
+      </div>
     </div>
   </div>
 
@@ -458,17 +458,175 @@
   </div>
 
   <script>
+    // ── MULTI-USER SYSTEM ──
+    const BADGE_RULES = [
+      { id: 'first_question', label: 'First Question', icon: '🎯', desc: 'Asked your first question', req: q => q >= 1 },
+      { id: 'curious',        label: 'Curious Mind',  icon: '🔍', desc: '5 questions asked',        req: q => q >= 5 },
+      { id: 'dedicated',      label: 'Dedicated',     icon: '📚', desc: '20 questions asked',       req: q => q >= 20 },
+      { id: 'scholar',        label: 'Scholar',       icon: '🎓', desc: '50 questions asked',       req: q => q >= 50 },
+      { id: 'streak3',        label: '3-Day Streak',  icon: '🔥', desc: '3 days in a row',          req: (q,u) => (u.streak||0) >= 3 },
+      { id: 'streak7',        label: 'Week Warrior',  icon: '⚡', desc: '7-day streak',             req: (q,u) => (u.streak||0) >= 7 },
+    ];
+    const STAR_THRESHOLDS = [0,10,25,50,100,200];
+    function getStars(q){ let s=0; for(let t of STAR_THRESHOLDS){ if(q>=t) s++; } return Math.min(s,5); }
+    function defaultUsers(){ return [
+      {id:'u1',name:'Engineering Student',role:'Mathematics Learner',color:'#a78bfa',totalQuestions:0,weeklyData:[0,0,0,0,0,0,0],badges:[],streak:0,lastActive:null},
+      {id:'u2',name:'Alice',role:'Physics Enthusiast',color:'#60a5fa',totalQuestions:0,weeklyData:[0,0,0,0,0,0,0],badges:[],streak:0,lastActive:null},
+      {id:'u3',name:'Bob',role:'Calculus Explorer',color:'#34d399',totalQuestions:0,weeklyData:[0,0,0,0,0,0,0],badges:[],streak:0,lastActive:null},
+    ];}
+    function loadUsers(){ const s=localStorage.getItem('mu_users'); return s?JSON.parse(s):defaultUsers(); }
+    function saveUsers(u){ localStorage.setItem('mu_users',JSON.stringify(u)); }
+    function getCurrentUserId(){ return localStorage.getItem('mu_current')||'u1'; }
+    function setCurrentUserId(id){ localStorage.setItem('mu_current',id); }
+    function getCurrentUser(){ const users=loadUsers(); return users.find(u=>u.id===getCurrentUserId())||users[0]; }
+    function awardBadges(u){ BADGE_RULES.forEach(r=>{ if(!u.badges.includes(r.id)&&r.req(u.totalQuestions,u)) u.badges.push(r.id); }); }
+    function recordQuestion(uid){
+      const users=loadUsers(); const u=users.find(x=>x.id===uid); if(!u) return;
+      u.totalQuestions=(u.totalQuestions||0)+1;
+      if(!u.weeklyData) u.weeklyData=[0,0,0,0,0,0,0];
+      u.weeklyData[new Date().getDay()]++;
+      const todayStr=new Date().toDateString();
+      if(u.lastActive!==todayStr){ const y=new Date(); y.setDate(y.getDate()-1); u.streak=(u.lastActive===y.toDateString())?(u.streak||0)+1:1; u.lastActive=todayStr; }
+      awardBadges(u); saveUsers(users);
+    }
+    function updateSidebarUser(){
+      const u=getCurrentUser();
+      document.getElementById('sidebarAvatar').textContent=u.name[0].toUpperCase();
+      document.getElementById('sidebarAvatar').style.background=`linear-gradient(135deg,${u.color},#1e293b)`;
+      document.getElementById('sidebarName').textContent=u.name;
+      document.getElementById('sidebarRole').textContent=u.role;
+    }
+
+    // ── SWITCH USER ──
+    function openSwitchUser(){ document.getElementById('switchUserModal').style.display='flex'; renderSwitchUserList(); }
+    function closeSwitchUser(){ document.getElementById('switchUserModal').style.display='none'; }
+    function renderSwitchUserList(){
+      const users=loadUsers(); const cur=getCurrentUserId();
+      document.getElementById('switchUserList').innerHTML=users.map(u=>`
+        <div onclick="switchToUser('${u.id}')" style="display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:10px;cursor:pointer;border:1px solid ${u.id===cur?'rgba(167,139,250,0.5)':'rgba(255,255,255,0.07)'};background:${u.id===cur?'rgba(167,139,250,0.12)':'rgba(255,255,255,0.03)'};margin-bottom:8px;">
+          <div style="width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,${u.color},#1e293b);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:15px;flex-shrink:0;">${u.name[0].toUpperCase()}</div>
+          <div style="flex:1;"><div style="color:#e2e8f0;font-size:.9rem;font-weight:500;">${u.name}${u.id===cur?' <span style="color:#a78bfa;font-size:.75rem;">(active)</span>':''}</div><div style="color:#64748b;font-size:.78rem;">${u.role}</div></div>
+          <div style="text-align:right;"><div style="color:#fbbf24;font-size:.85rem;">${'⭐'.repeat(getStars(u.totalQuestions||0))}</div><div style="color:#64748b;font-size:.75rem;">${u.totalQuestions||0} questions</div></div>
+        </div>`).join('')+`<button onclick="openAddUser()" style="width:100%;padding:10px;border-radius:10px;border:1px dashed rgba(255,255,255,0.15);background:transparent;color:#94a3b8;cursor:pointer;font-size:.875rem;margin-top:4px;">+ Add New Profile</button>`;
+    }
+    function switchToUser(id){
+      setCurrentUserId(id);
+      const saved=localStorage.getItem('chatHistory_'+id);
+      chatHistory=saved?JSON.parse(saved):[];
+      currentChatId=null; renderChatHistory(); updateSidebarUser();
+      document.getElementById('question').value='';
+      document.getElementById('result').style.display='none';
+      document.getElementById('status').textContent='';
+      closeSwitchUser();
+    }
+    function openAddUser(){
+      const name=prompt('Enter profile name:'); if(!name||!name.trim()) return;
+      const role=prompt('Enter role (e.g. Physics Student):')||'Learner';
+      const colors=['#f472b6','#fb923c','#facc15','#4ade80','#22d3ee','#818cf8'];
+      const users=loadUsers();
+      users.push({id:'u'+Date.now(),name:name.trim(),role:role.trim(),color:colors[Math.floor(Math.random()*colors.length)],totalQuestions:0,weeklyData:[0,0,0,0,0,0,0],badges:[],streak:0,lastActive:null});
+      saveUsers(users); renderSwitchUserList();
+    }
+
+    // ── PROFILE PANEL ──
+    function openProfilePanel(){ const u=getCurrentUser(); document.getElementById('profileModal').style.display='flex'; renderProfilePanel(u); }
+    function closeProfilePanel(){ document.getElementById('profileModal').style.display='none'; }
+    let activeChartType='bar';
+    function renderProfilePanel(u){
+      const stars=getStars(u.totalQuestions||0);
+      const earned=BADGE_RULES.filter(b=>(u.badges||[]).includes(b.id));
+      const locked=BADGE_RULES.filter(b=>!(u.badges||[]).includes(b.id));
+      const data=u.weeklyData||[0,0,0,0,0,0,0];
+      const total=data.reduce((a,b)=>a+b,0);
+      const peak=Math.max(...data);
+      const peakDay=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][data.indexOf(peak)];
+      const activeDays=data.filter(v=>v>0).length;
+      const avg=activeDays?(total/activeDays).toFixed(1):0;
+      document.getElementById('profileContent').innerHTML=`
+        <div style="text-align:center;padding-bottom:18px;border-bottom:1px solid rgba(255,255,255,0.08);">
+          <div style="width:76px;height:76px;border-radius:50%;background:linear-gradient(135deg,${u.color},#1e293b);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:30px;margin:0 auto 10px;box-shadow:0 0 20px ${u.color}55;">${u.name[0].toUpperCase()}</div>
+          <div style="color:#fff;font-size:1.1rem;font-weight:600;">${u.name}</div>
+          <div style="color:#64748b;font-size:.82rem;margin-top:2px;">${u.role}</div>
+          <div style="color:#fbbf24;font-size:1.4rem;margin-top:8px;letter-spacing:2px;">${'⭐'.repeat(stars)}${'<span style="opacity:.25">⭐</span>'.repeat(5-stars)}</div>
+          <div style="color:#94a3b8;font-size:.75rem;margin-top:4px;">${u.totalQuestions||0} questions · ${u.streak||0} day streak 🔥</div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:16px;">
+          ${[['📅','This Week',total],['📈','Daily Avg',avg],['🏆','Peak Day',peakDay],['✅','Active Days',activeDays+'/7']].map(([icon,label,val])=>`
+            <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);border-radius:10px;padding:10px 6px;text-align:center;">
+              <div style="font-size:1.1rem;">${icon}</div><div style="color:#fff;font-size:1rem;font-weight:600;margin:3px 0;">${val}</div><div style="color:#64748b;font-size:.7rem;">${label}</div>
+            </div>`).join('')}
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-top:20px;margin-bottom:10px;">
+          <div style="color:#a78bfa;font-size:.8rem;font-weight:600;text-transform:uppercase;letter-spacing:.5px;">Weekly Learning Progress</div>
+          <div style="display:flex;gap:4px;">
+            <button id="btnBar"  onclick="switchChart('bar','${u.id}')"  style="padding:4px 10px;border-radius:6px;border:1px solid rgba(167,139,250,0.4);background:rgba(167,139,250,0.2);color:#a78bfa;font-size:.75rem;cursor:pointer;">▐▌ Bar</button>
+            <button id="btnLine" onclick="switchChart('line','${u.id}')" style="padding:4px 10px;border-radius:6px;border:1px solid rgba(255,255,255,0.1);background:transparent;color:#64748b;font-size:.75rem;cursor:pointer;">╱ Line</button>
+          </div>
+        </div>
+        <canvas id="progressChart" width="460" height="160" style="width:100%;border-radius:10px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.05);"></canvas>
+        <div style="margin-top:16px;display:flex;flex-direction:column;gap:6px;">
+          ${['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].map((day,i)=>{const pct=peak>0?Math.round((data[i]/peak)*100):0;return`<div style="display:flex;align-items:center;gap:8px;"><div style="color:#64748b;font-size:.75rem;width:28px;">${day}</div><div style="flex:1;height:6px;background:rgba(255,255,255,0.06);border-radius:4px;overflow:hidden;"><div style="height:100%;width:${pct}%;background:linear-gradient(90deg,${u.color},#60a5fa);border-radius:4px;"></div></div><div style="color:#94a3b8;font-size:.75rem;width:18px;text-align:right;">${data[i]}</div></div>`;}).join('')}
+        </div>
+        <div style="margin-top:20px;">
+          <div style="color:#a78bfa;font-size:.8rem;font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px;">Badges (${earned.length}/${BADGE_RULES.length})</div>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;">
+            ${earned.length===0?'<div style="color:#64748b;font-size:.85rem;">No badges yet — start asking questions!</div>':earned.map(b=>`<div title="${b.desc}" style="background:rgba(167,139,250,0.15);border:1px solid rgba(167,139,250,0.35);border-radius:8px;padding:6px 12px;display:flex;align-items:center;gap:6px;"><span style="font-size:1.1rem;">${b.icon}</span><span style="color:#e2e8f0;font-size:.8rem;font-weight:500;">${b.label}</span></div>`).join('')}
+          </div>
+          ${locked.length>0?`<div style="color:#475569;font-size:.75rem;font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin:12px 0 8px;">Locked</div><div style="display:flex;flex-wrap:wrap;gap:8px;">${locked.map(b=>`<div title="${b.desc}" style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.07);border-radius:8px;padding:6px 12px;display:flex;align-items:center;gap:6px;opacity:.45;"><span style="font-size:1.1rem;filter:grayscale(1);">${b.icon}</span><span style="color:#64748b;font-size:.8rem;">${b.label}</span></div>`).join('')}</div>`:''}
+        </div>`;
+      activeChartType='bar';
+      setTimeout(()=>drawProgressChart(u,'bar'),60);
+    }
+    function switchChart(type,userId){
+      activeChartType=type;
+      const u=loadUsers().find(x=>x.id===userId); if(!u) return;
+      document.getElementById('btnBar').style.cssText=`padding:4px 10px;border-radius:6px;font-size:.75rem;cursor:pointer;border:1px solid ${type==='bar'?'rgba(167,139,250,0.4)':'rgba(255,255,255,0.1)'};background:${type==='bar'?'rgba(167,139,250,0.2)':'transparent'};color:${type==='bar'?'#a78bfa':'#64748b'};`;
+      document.getElementById('btnLine').style.cssText=`padding:4px 10px;border-radius:6px;font-size:.75rem;cursor:pointer;border:1px solid ${type==='line'?'rgba(96,165,250,0.4)':'rgba(255,255,255,0.1)'};background:${type==='line'?'rgba(96,165,250,0.2)':'transparent'};color:${type==='line'?'#60a5fa':'#64748b'};`;
+      drawProgressChart(u,type);
+    }
+    function drawProgressChart(u,type){
+      const canvas=document.getElementById('progressChart'); if(!canvas) return;
+      const ctx=canvas.getContext('2d');
+      const days=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+      const data=u.weeklyData||[0,0,0,0,0,0,0];
+      const W=canvas.width,H=canvas.height;
+      const pad={top:20,bottom:30,left:32,right:16};
+      const cW=W-pad.left-pad.right,cH=H-pad.top-pad.bottom;
+      const maxVal=Math.max(...data,1);
+      ctx.clearRect(0,0,W,H);
+      ctx.strokeStyle='rgba(255,255,255,0.05)'; ctx.lineWidth=1;
+      for(let i=0;i<=4;i++){const y=pad.top+cH-(i/4)*cH;ctx.beginPath();ctx.moveTo(pad.left,y);ctx.lineTo(W-pad.right,y);ctx.stroke();ctx.fillStyle='#475569';ctx.font='9px Segoe UI';ctx.textAlign='right';ctx.fillText(Math.round((i/4)*maxVal),pad.left-4,y+3);}
+      const slotW=cW/7;
+      if(type==='bar'){
+        const barW=slotW*0.52;
+        data.forEach((val,i)=>{
+          const x=pad.left+i*slotW+(slotW-barW)/2;
+          const bH=Math.max((val/maxVal)*cH,val>0?3:0);
+          const y=pad.top+cH-bH;
+          if(val>0){const g=ctx.createLinearGradient(0,y,0,y+bH);g.addColorStop(0,u.color||'#a78bfa');g.addColorStop(1,'rgba(96,165,250,0.25)');ctx.fillStyle=g;}else{ctx.fillStyle='rgba(255,255,255,0.04)';}
+          ctx.beginPath();ctx.roundRect(x,y,barW,bH||2,[4,4,0,0]);ctx.fill();
+          if(val>0){ctx.fillStyle='#e2e8f0';ctx.font='bold 10px Segoe UI';ctx.textAlign='center';ctx.fillText(val,x+barW/2,y-5);}
+          ctx.fillStyle='#64748b';ctx.font='10px Segoe UI';ctx.textAlign='center';ctx.fillText(days[i],x+barW/2,H-8);
+        });
+      } else {
+        const pts=data.map((val,i)=>({x:pad.left+i*slotW+slotW/2,y:pad.top+cH-(val/maxVal)*cH}));
+        const ag=ctx.createLinearGradient(0,pad.top,0,pad.top+cH);ag.addColorStop(0,(u.color||'#a78bfa')+'44');ag.addColorStop(1,'transparent');
+        ctx.beginPath();ctx.moveTo(pts[0].x,pad.top+cH);pts.forEach(p=>ctx.lineTo(p.x,p.y));ctx.lineTo(pts[pts.length-1].x,pad.top+cH);ctx.closePath();ctx.fillStyle=ag;ctx.fill();
+        ctx.beginPath();ctx.strokeStyle=u.color||'#a78bfa';ctx.lineWidth=2.5;ctx.lineJoin='round';pts.forEach((p,i)=>i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y));ctx.stroke();
+        pts.forEach((p,i)=>{ctx.beginPath();ctx.arc(p.x,p.y,4,0,Math.PI*2);ctx.fillStyle=data[i]>0?(u.color||'#a78bfa'):'rgba(255,255,255,0.1)';ctx.fill();ctx.strokeStyle='#202123';ctx.lineWidth=1.5;ctx.stroke();if(data[i]>0){ctx.fillStyle='#e2e8f0';ctx.font='bold 10px Segoe UI';ctx.textAlign='center';ctx.fillText(data[i],p.x,p.y-9);}ctx.fillStyle='#64748b';ctx.font='10px Segoe UI';ctx.textAlign='center';ctx.fillText(days[i],p.x,H-8);});
+      }
+    }
+
     // ── SIDEBAR FUNCTIONALITY ──
     let chatHistory = [];
     let currentChatId = null;
 
     // Initialize chat history
     function initializeChatHistory() {
-      const savedChats = localStorage.getItem('chatHistory');
-      if (savedChats) {
-        chatHistory = JSON.parse(savedChats);
-        renderChatHistory();
-      }
+      const uid=getCurrentUserId();
+      const savedChats = localStorage.getItem('chatHistory_'+uid)||localStorage.getItem('chatHistory');
+      if (savedChats) { chatHistory = JSON.parse(savedChats); renderChatHistory(); }
+      updateSidebarUser();
     }
 
     // Start new chat
@@ -486,6 +644,7 @@
 
     // Save chat to history
     function saveChatToHistory(question, answer) {
+      const uid=getCurrentUserId();
       const chat = {
         id: currentChatId || Date.now().toString(),
         question: question.substring(0, 100) + (question.length > 100 ? '...' : ''),
@@ -493,19 +652,11 @@
         timestamp: new Date().toISOString(),
         time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
       };
-
-      // Remove existing chat with same ID
       chatHistory = chatHistory.filter(c => c.id !== chat.id);
-      
-      // Add to beginning of array
       chatHistory.unshift(chat);
-      
-      // Keep only last 20 chats
-      if (chatHistory.length > 20) {
-        chatHistory = chatHistory.slice(0, 20);
-      }
-
-      localStorage.setItem('chatHistory', JSON.stringify(chatHistory));
+      if (chatHistory.length > 20) chatHistory = chatHistory.slice(0, 20);
+      localStorage.setItem('chatHistory_'+uid, JSON.stringify(chatHistory));
+      recordQuestion(uid);
       renderChatHistory();
     }
 
@@ -1236,5 +1387,27 @@
       document.getElementById('cameraModal').classList.remove('open');
     }
   </script>
+
+  <!-- SWITCH USER MODAL -->
+  <div id="switchUserModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.65);backdrop-filter:blur(4px);z-index:9999;align-items:center;justify-content:center;" onclick="if(event.target===this)closeSwitchUser()">
+    <div style="background:#202123;border-radius:14px;width:400px;max-width:95vw;max-height:80vh;overflow-y:auto;padding:24px;box-shadow:0 24px 60px rgba(0,0,0,0.6);border:1px solid rgba(255,255,255,0.08);position:relative;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;">
+        <h3 style="color:#fff;font-size:1rem;font-weight:600;">Switch Profile</h3>
+        <button onclick="closeSwitchUser()" style="background:transparent;border:none;color:#8e8ea0;font-size:1.1rem;cursor:pointer;padding:4px 8px;border-radius:6px;">✕</button>
+      </div>
+      <div id="switchUserList"></div>
+    </div>
+  </div>
+
+  <!-- PROFILE PANEL MODAL -->
+  <div id="profileModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.65);backdrop-filter:blur(4px);z-index:9999;align-items:center;justify-content:center;" onclick="if(event.target===this)closeProfilePanel()">
+    <div style="background:#202123;border-radius:14px;width:540px;max-width:95vw;max-height:90vh;overflow-y:auto;padding:28px;box-shadow:0 24px 60px rgba(0,0,0,0.6);border:1px solid rgba(255,255,255,0.08);position:relative;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,0.1) transparent;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
+        <h3 style="color:#fff;font-size:1rem;font-weight:600;">My Profile</h3>
+        <button onclick="closeProfilePanel()" style="background:transparent;border:none;color:#8e8ea0;font-size:1.1rem;cursor:pointer;padding:4px 8px;border-radius:6px;">✕</button>
+      </div>
+      <div id="profileContent"></div>
+    </div>
+  </div>
 </body>
 </html>
