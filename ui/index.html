@@ -694,174 +694,256 @@
 
     // Game functions
     function playGame(gameType) {
-      const games = {
-        stepBuilder: {
-          title: '🧩 Step Builder Game',
-          description: 'Arrange mathematical solution steps in the correct order!',
-          content: `
-            <div style="padding: 20px; text-align: center;">
-              <h3>Step Builder Challenge</h3>
-              <p style="margin: 15px 0; color: #94a3b8;">Drag and drop the steps to solve: "Find the derivative of x² + 3x"</p>
-              <div style="display: flex; flex-direction: column; gap: 10px; margin: 20px 0;">
-                <div class="step-card" draggable="true" style="background: rgba(167,139,250,0.1); padding: 10px; border-radius: 8px; cursor: move;">
-                  Step: Apply power rule to each term
-                </div>
-                <div class="step-card" draggable="true" style="background: rgba(167,139,250,0.1); padding: 10px; border-radius: 8px; cursor: move;">
-                  Step: d/dx(x²) = 2x
-                </div>
-                <div class="step-card" draggable="true" style="background: rgba(167,139,250,0.1); padding: 10px; border-radius: 8px; cursor: move;">
-                  Step: d/dx(3x) = 3
-                </div>
-                <div class="step-card" draggable="true" style="background: rgba(167,139,250,0.1); padding: 10px; border-radius: 8px; cursor: move;">
-                  Final Answer: 2x + 3
-                </div>
-              </div>
-              <button onclick="checkStepOrder()" style="background: #7c3aed; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer;">Check Order</button>
-            </div>
-          `
-        },
-        conceptMatch: {
-          title: '🎯 Concept Matcher',
-          description: 'Match mathematical concepts with their definitions!',
-          content: `
-            <div style="padding: 20px; text-align: center;">
-              <h3>Concept Matching</h3>
-              <p style="margin: 15px 0; color: #94a3b8;">Match the concepts with their correct definitions</p>
-              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 20px 0;">
-                <div style="background: rgba(96,165,250,0.1); padding: 15px; border-radius: 8px;">
-                  <strong>Derivative</strong>
-                </div>
-                <div style="background: rgba(52,211,153,0.1); padding: 15px; border-radius: 8px;">
-                  Rate of change
-                </div>
-                <div style="background: rgba(96,165,250,0.1); padding: 15px; border-radius: 8px;">
-                  <strong>Integral</strong>
-                </div>
-                <div style="background: rgba(52,211,153,0.1); padding: 15px; border-radius: 8px;">
-                  Area under curve
-                </div>
-              </div>
-              <p style="color: #34d399; font-weight: 500;">🎉 Perfect Match! You understand the concepts!</p>
-            </div>
-          `
-        },
-        formulaQuest: {
-          title: '⚡ Formula Quest',
-          description: 'Complete the mathematical formulas!',
-          content: `
-            <div style="padding: 20px; text-align: center;">
-              <h3>Formula Quest</h3>
-              <p style="margin: 15px 0; color: #94a3b8;">Fill in the missing parts of these formulas</p>
-              <div style="margin: 20px 0;">
-                <div style="background: rgba(255,183,77,0.1); padding: 15px; border-radius: 8px; margin: 10px 0;">
-                  Quadratic Formula: x = (-b ± √(b² - ___)) / ___
-                  <input type="text" placeholder="4ac" style="margin: 0 5px; padding: 5px; border-radius: 4px; border: 1px solid #666; background: #1a1a1a; color: white; width: 60px;">
-                  <input type="text" placeholder="2a" style="margin: 0 5px; padding: 5px; border-radius: 4px; border: 1px solid #666; background: #1a1a1a; color: white; width: 60px;">
-                </div>
-                <div style="background: rgba(255,183,77,0.1); padding: 15px; border-radius: 8px; margin: 10px 0;">
-                  Pythagorean Theorem: a² + b² = ___
-                  <input type="text" placeholder="c²" style="margin: 0 5px; padding: 5px; border-radius: 4px; border: 1px solid #666; background: #1a1a1a; color: white; width: 60px;">
-                </div>
-              </div>
-              <button onclick="checkFormulas()" style="background: #7c3aed; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer;">Check Answers</button>
-            </div>
-          `
-        },
-        visualSolver: {
-          title: '📊 Visual Solver',
-          description: 'Visualize mathematical concepts!',
-          content: `
-            <div style="padding: 20px; text-align: center;">
-              <h3>Visual Problem Solver</h3>
-              <p style="margin: 15px 0; color: #94a3b8;">Visualize the function y = x²</p>
-              <div style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 8px; margin: 20px 0;">
-                <svg width="200" height="150" viewBox="-100 -75 200 150" style="border: 1px solid #666;">
-                  <!-- Grid -->
-                  <defs>
-                    <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
-                      <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#333" stroke-width="0.5"/>
-                    </pattern>
-                  </defs>
-                  <rect width="200" height="150" x="-100" y="-75" fill="url(#grid)" />
-                  
-                  <!-- Axes -->
-                  <line x1="-100" y1="0" x2="100" y2="0" stroke="#666" stroke-width="1"/>
-                  <line x1="0" y1="-75" x2="0" y2="75" stroke="#666" stroke-width="1"/>
-                  
-                  <!-- Parabola y = x²/20 (scaled for visibility) -->
-                  <path d="M -80,320 Q 0,-60 80,320" stroke="#60a5fa" stroke-width="2" fill="none" transform="scale(1, 0.2)"/>
-                </svg>
-              </div>
-              <p style="color: #60a5fa; font-size: 14px;">This parabola shows how y increases as x² increases!</p>
-            </div>
-          `
-        }
-      };
-
-      const game = games[gameType];
-      if (game) {
-        showGameModal(game);
-      }
+      closeGameModal();
+      if (gameType === 'stepBuilder') openStepBuilder();
+      else if (gameType === 'conceptMatch') openConceptMatch();
+      else if (gameType === 'formulaQuest') openFormulaQuest();
+      else if (gameType === 'visualSolver') openVisualSolver();
     }
 
-    // Show game modal
-    function showGameModal(game) {
+    function showGameModal(html, title) {
       const modal = document.createElement('div');
       modal.className = 'game-modal';
+      modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.82);display:flex;align-items:center;justify-content:center;z-index:1000;';
       modal.innerHTML = `
-        <div class="game-modal-content">
-          <div class="game-header">
-            <h2>${game.title}</h2>
-            <button onclick="closeGameModal()" style="background: none; border: none; color: #94a3b8; font-size: 24px; cursor: pointer; float: right;">&times;</button>
+        <div style="background:#111827;border:1px solid rgba(167,139,250,0.3);border-radius:16px;padding:28px;max-width:620px;width:95%;max-height:85vh;overflow-y:auto;color:#e2e8f0;position:relative;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;">
+            <h2 style="font-size:1.1rem;font-weight:600;">${title}</h2>
+            <button onclick="closeGameModal()" style="background:transparent;border:none;color:#94a3b8;font-size:1.3rem;cursor:pointer;line-height:1;">✕</button>
           </div>
-          <p style="color: #94a3b8; margin-bottom: 20px;">${game.description}</p>
-          ${game.content}
-        </div>
-      `;
-      
-      // Add modal styles
-      modal.style.cssText = `
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0,0,0,0.8);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 1000;
-      `;
-      
-      modal.querySelector('.game-modal-content').style.cssText = `
-        background: rgba(0,0,0,0.95);
-        border: 1px solid rgba(167,139,250,0.3);
-        border-radius: 15px;
-        padding: 30px;
-        max-width: 600px;
-        max-height: 80vh;
-        overflow-y: auto;
-        color: #e2e8f0;
-      `;
-
+          ${html}
+        </div>`;
       document.body.appendChild(modal);
     }
 
-    // Close game modal
     function closeGameModal() {
-      const modal = document.querySelector('.game-modal');
-      if (modal) {
-        modal.remove();
+      document.querySelectorAll('.game-modal').forEach(m => m.remove());
+    }
+
+    function gameResult(correct, score, total, feedback) {
+      const pct = Math.round((score/total)*100);
+      const color = pct===100 ? '#34d399' : pct>=60 ? '#fbbf24' : '#f87171';
+      const emoji = pct===100 ? '🎉' : pct>=60 ? '👍' : '❌';
+      return `<div style="margin-top:16px;padding:14px 16px;border-radius:10px;background:${color}18;border:1px solid ${color}55;text-align:center;">
+        <div style="font-size:1.5rem;">${emoji}</div>
+        <div style="color:${color};font-weight:600;font-size:1rem;margin:6px 0;">${pct===100?'Perfect!':pct>=60?'Good effort!':'Keep practising!'} — ${score}/${total} correct</div>
+        <div style="color:#94a3b8;font-size:.85rem;margin-top:4px;">${feedback}</div>
+      </div>`;
+    }
+
+    // ── STEP BUILDER ──
+    // Correct order indices: 0,1,2,3 (already in correct order in the data)
+    const SB_STEPS = [
+      { id:0, text:'Identify the function: f(x) = x² + 3x' },
+      { id:1, text:'Apply power rule to x²: d/dx(x²) = 2x' },
+      { id:2, text:'Apply power rule to 3x: d/dx(3x) = 3' },
+      { id:3, text:'Combine results: f\'(x) = 2x + 3' },
+    ];
+    let sbOrder = [];
+
+    function openStepBuilder() {
+      const shuffled = [...SB_STEPS].sort(() => Math.random()-0.5);
+      sbOrder = shuffled.map(s => s.id);
+      const html = `
+        <p style="color:#94a3b8;margin-bottom:14px;">Arrange the steps in the correct order to differentiate <strong style="color:#a78bfa;">f(x) = x² + 3x</strong>. Click steps to move them up/down.</p>
+        <div id="sbList" style="display:flex;flex-direction:column;gap:8px;margin-bottom:16px;">
+          ${shuffled.map((s,i) => `
+            <div id="sb-${s.id}" data-idx="${i}" style="background:rgba(167,139,250,0.1);border:1px solid rgba(167,139,250,0.2);padding:12px 14px;border-radius:8px;display:flex;align-items:center;justify-content:space-between;gap:8px;">
+              <span style="color:#e2e8f0;font-size:.9rem;">${s.text}</span>
+              <div style="display:flex;gap:4px;flex-shrink:0;">
+                <button onclick="sbMove(${s.id},-1)" style="background:rgba(255,255,255,0.08);border:none;color:#94a3b8;border-radius:4px;padding:2px 8px;cursor:pointer;font-size:.85rem;">▲</button>
+                <button onclick="sbMove(${s.id},1)"  style="background:rgba(255,255,255,0.08);border:none;color:#94a3b8;border-radius:4px;padding:2px 8px;cursor:pointer;font-size:.85rem;">▼</button>
+              </div>
+            </div>`).join('')}
+        </div>
+        <button onclick="checkStepOrder()" style="background:#7c3aed;color:#fff;border:none;padding:10px 24px;border-radius:8px;cursor:pointer;font-size:.9rem;width:100%;">✅ Check Order</button>
+        <div id="sbResult"></div>`;
+      showGameModal(html, '🧩 Step Builder');
+    }
+
+    function sbMove(id, dir) {
+      const list = document.getElementById('sbList');
+      const items = [...list.children];
+      const idx = items.findIndex(el => el.id === 'sb-'+id);
+      const newIdx = idx + dir;
+      if (newIdx < 0 || newIdx >= items.length) return;
+      if (dir === -1) list.insertBefore(items[idx], items[newIdx]);
+      else list.insertBefore(items[newIdx], items[idx]);
+    }
+
+    function checkStepOrder() {
+      const list = document.getElementById('sbList');
+      const userOrder = [...list.children].map(el => parseInt(el.id.replace('sb-','')));
+      const correct = [0,1,2,3];
+      let score = 0;
+      userOrder.forEach((id, i) => { if (id === correct[i]) score++; });
+      const feedback = score===4 ? 'You nailed the derivative steps!' : `Steps ${userOrder.map((id,i)=>id!==correct[i]?i+1:null).filter(Boolean).join(', ')} are out of place.`;
+      document.getElementById('sbResult').innerHTML = gameResult(score===4, score, 4, feedback);
+    }
+
+    // ── CONCEPT MATCHER ──
+    const CM_PAIRS = [
+      { concept:'Derivative',  match:'Rate of change of a function',    id:'d' },
+      { concept:'Integral',    match:'Area under a curve',              id:'i' },
+      { concept:'Limit',       match:'Value a function approaches',     id:'l' },
+      { concept:'Matrix',      match:'Rectangular array of numbers',    id:'m' },
+    ];
+    let cmSelected = null;
+
+    function openConceptMatch() {
+      const defs = [...CM_PAIRS].sort(()=>Math.random()-0.5);
+      const html = `
+        <p style="color:#94a3b8;margin-bottom:14px;">Click a concept on the left, then click its matching definition on the right.</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;">
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            ${CM_PAIRS.map(p=>`<button id="cm-c-${p.id}" onclick="cmSelect('c','${p.id}')" style="background:rgba(96,165,250,0.1);border:1px solid rgba(96,165,250,0.25);color:#e2e8f0;padding:12px;border-radius:8px;cursor:pointer;text-align:left;font-size:.875rem;">${p.concept}</button>`).join('')}
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            ${defs.map(p=>`<button id="cm-d-${p.id}" onclick="cmSelect('d','${p.id}')" style="background:rgba(52,211,153,0.08);border:1px solid rgba(52,211,153,0.2);color:#e2e8f0;padding:12px;border-radius:8px;cursor:pointer;text-align:left;font-size:.875rem;">${p.match}</button>`).join('')}
+          </div>
+        </div>
+        <div id="cmScore" style="color:#64748b;font-size:.85rem;text-align:center;margin-bottom:8px;">Matched: 0 / ${CM_PAIRS.length}</div>
+        <div id="cmResult"></div>`;
+      showGameModal(html, '🎯 Concept Matcher');
+      cmSelected = null;
+      window._cmMatched = 0;
+    }
+
+    function cmSelect(type, id) {
+      if (!cmSelected) {
+        cmSelected = { type, id };
+        document.getElementById(`cm-${type}-${id}`).style.borderColor = '#a78bfa';
+        document.getElementById(`cm-${type}-${id}`).style.background = 'rgba(167,139,250,0.2)';
+      } else {
+        if (cmSelected.type === type) {
+          // deselect previous
+          document.getElementById(`cm-${cmSelected.type}-${cmSelected.id}`).style.borderColor = cmSelected.type==='c'?'rgba(96,165,250,0.25)':'rgba(52,211,153,0.2)';
+          document.getElementById(`cm-${cmSelected.type}-${cmSelected.id}`).style.background = cmSelected.type==='c'?'rgba(96,165,250,0.1)':'rgba(52,211,153,0.08)';
+          cmSelected = { type, id };
+          document.getElementById(`cm-${type}-${id}`).style.borderColor = '#a78bfa';
+          document.getElementById(`cm-${type}-${id}`).style.background = 'rgba(167,139,250,0.2)';
+          return;
+        }
+        const cId = cmSelected.type==='c' ? cmSelected.id : id;
+        const dId = cmSelected.type==='d' ? cmSelected.id : id;
+        const correct = cId === dId;
+        const cBtn = document.getElementById(`cm-c-${cId}`);
+        const dBtn = document.getElementById(`cm-d-${dId}`);
+        if (correct) {
+          [cBtn,dBtn].forEach(b=>{ b.style.background='rgba(52,211,153,0.2)';b.style.borderColor='#34d399';b.style.color='#34d399';b.disabled=true; });
+          window._cmMatched++;
+          document.getElementById('cmScore').textContent = `Matched: ${window._cmMatched} / ${CM_PAIRS.length}`;
+          if (window._cmMatched === CM_PAIRS.length) {
+            document.getElementById('cmResult').innerHTML = gameResult(true, CM_PAIRS.length, CM_PAIRS.length, 'You matched all concepts correctly!');
+          }
+        } else {
+          [cBtn,dBtn].forEach(b=>{ b.style.background='rgba(239,68,68,0.15)';b.style.borderColor='#ef4444'; });
+          setTimeout(()=>{
+            [cBtn,dBtn].forEach(b=>{ b.style.background=b.id.startsWith('cm-c')?'rgba(96,165,250,0.1)':'rgba(52,211,153,0.08)';b.style.borderColor=b.id.startsWith('cm-c')?'rgba(96,165,250,0.25)':'rgba(52,211,153,0.2)'; });
+          }, 800);
+        }
+        cmSelected = null;
       }
     }
 
-    // Game helper functions
-    function checkStepOrder() {
-      alert('🎉 Great job! You arranged the steps correctly!');
+    // ── FORMULA QUEST ──
+    const FQ_QUESTIONS = [
+      { q:'Quadratic formula: x = (−b ± √(b² − ___)) / ___', blanks:['4ac','2a'], hint:'Discriminant and denominator' },
+      { q:'Pythagorean theorem: a² + b² = ___',               blanks:['c²'],       hint:'Sum of squares of two sides' },
+      { q:'Area of circle: A = ___ × r²',                     blanks:['π'],        hint:'Greek letter pi' },
+      { q:'Euler\'s identity: e^(iπ) + ___ = 0',              blanks:['1'],        hint:'A simple integer' },
+    ];
+
+    function openFormulaQuest() {
+      const html = `
+        <p style="color:#94a3b8;margin-bottom:14px;">Fill in the blanks to complete each formula. Answers are case-insensitive.</p>
+        <div id="fqList" style="display:flex;flex-direction:column;gap:12px;margin-bottom:16px;">
+          ${FQ_QUESTIONS.map((q,qi)=>`
+            <div style="background:rgba(255,183,77,0.07);border:1px solid rgba(255,183,77,0.2);padding:14px;border-radius:10px;">
+              <div style="color:#e2e8f0;font-size:.9rem;margin-bottom:8px;">${qi+1}. ${q.q}</div>
+              <div style="display:flex;flex-wrap:wrap;gap:6px;align-items:center;">
+                ${q.blanks.map((b,bi)=>`<input id="fq-${qi}-${bi}" type="text" placeholder="blank ${bi+1}" style="padding:6px 10px;border-radius:6px;border:1px solid rgba(255,255,255,0.15);background:#1e293b;color:#fff;font-size:.875rem;width:90px;">`).join('')}
+                <span id="fq-icon-${qi}" style="font-size:1.1rem;"></span>
+              </div>
+              <div id="fq-hint-${qi}" style="color:#64748b;font-size:.78rem;margin-top:4px;">Hint: ${q.hint}</div>
+            </div>`).join('')}
+        </div>
+        <button onclick="checkFormulas()" style="background:#7c3aed;color:#fff;border:none;padding:10px 24px;border-radius:8px;cursor:pointer;font-size:.9rem;width:100%;">✅ Check Answers</button>
+        <div id="fqResult"></div>`;
+      showGameModal(html, '⚡ Formula Quest');
     }
 
     function checkFormulas() {
-      alert('🎉 Excellent! You completed the formulas correctly!');
+      let score = 0, total = 0;
+      const wrong = [];
+      FQ_QUESTIONS.forEach((q, qi) => {
+        let qCorrect = true;
+        q.blanks.forEach((ans, bi) => {
+          total++;
+          const val = (document.getElementById(`fq-${qi}-${bi}`)?.value||'').trim().toLowerCase().replace(/\s/g,'');
+          const expected = ans.toLowerCase().replace(/\s/g,'');
+          const correct = val === expected;
+          if (correct) { score++; } else { qCorrect=false; wrong.push(`Q${qi+1} blank ${bi+1} (expected: ${ans})`); }
+          const input = document.getElementById(`fq-${qi}-${bi}`);
+          if (input) { input.style.borderColor = correct?'#34d399':'#ef4444'; input.style.background = correct?'rgba(52,211,153,0.1)':'rgba(239,68,68,0.1)'; }
+        });
+        document.getElementById(`fq-icon-${qi}`).textContent = qCorrect ? '✅' : '❌';
+      });
+      const feedback = score===total ? 'All formulas correct — excellent work!' : `Wrong: ${wrong.join('; ')}`;
+      document.getElementById('fqResult').innerHTML = gameResult(score===total, score, total, feedback);
+    }
+
+    // ── VISUAL SOLVER ──
+    const VS_QUESTIONS = [
+      { q:'What is the shape of the graph y = x²?',           options:['Straight line','Parabola','Circle','Hyperbola'], correct:1 },
+      { q:'What does the slope of a line represent?',          options:['Area','Y-intercept','Rate of change','Curvature'], correct:2 },
+      { q:'Where does y = 2x + 3 cross the y-axis?',          options:['x=2','y=2','y=3','x=3'], correct:2 },
+      { q:'What is the period of y = sin(x)?',                 options:['π','2π','π/2','4π'], correct:1 },
+    ];
+    let vsScore = 0, vsAnswered = 0;
+
+    function openVisualSolver() {
+      vsScore = 0; vsAnswered = 0;
+      renderVSQuestion(0);
+    }
+
+    function renderVSQuestion(qi) {
+      if (qi >= VS_QUESTIONS.length) {
+        const html = `<div style="text-align:center;padding:20px;">${gameResult(vsScore===VS_QUESTIONS.length, vsScore, VS_QUESTIONS.length, vsScore===VS_QUESTIONS.length?'Perfect visual analysis!':'Review the graphs and try again.')}</div>`;
+        showGameModal(html, '📊 Visual Solver — Results');
+        return;
+      }
+      const q = VS_QUESTIONS[qi];
+      const html = `
+        <div style="color:#94a3b8;font-size:.8rem;margin-bottom:12px;">Question ${qi+1} of ${VS_QUESTIONS.length} · Score: ${vsScore}</div>
+        <div style="background:rgba(96,165,250,0.08);border:1px solid rgba(96,165,250,0.2);border-radius:10px;padding:16px;margin-bottom:16px;">
+          <p style="color:#e2e8f0;font-size:.95rem;font-weight:500;">${q.q}</p>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          ${q.options.map((opt,oi)=>`
+            <button onclick="vsAnswer(${qi},${oi})" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);color:#e2e8f0;padding:12px 16px;border-radius:8px;cursor:pointer;text-align:left;font-size:.9rem;transition:all .15s;" onmouseover="this.style.background='rgba(167,139,250,0.12)'" onmouseout="this.style.background='rgba(255,255,255,0.04)'">
+              <span style="color:#64748b;margin-right:8px;">${String.fromCharCode(65+oi)}.</span>${opt}
+            </button>`).join('')}
+        </div>`;
+      showGameModal(html, '📊 Visual Solver');
+    }
+
+    function vsAnswer(qi, chosen) {
+      const q = VS_QUESTIONS[qi];
+      const correct = chosen === q.correct;
+      if (correct) vsScore++;
+      const btns = document.querySelectorAll('.game-modal button[onclick^="vsAnswer"]');
+      btns.forEach((btn, i) => {
+        btn.disabled = true;
+        btn.onmouseover = null; btn.onmouseout = null;
+        if (i === q.correct) { btn.style.background='rgba(52,211,153,0.2)';btn.style.borderColor='#34d399';btn.style.color='#34d399'; }
+        else if (i === chosen && !correct) { btn.style.background='rgba(239,68,68,0.15)';btn.style.borderColor='#ef4444';btn.style.color='#ef4444'; }
+      });
+      const feedback = document.createElement('div');
+      feedback.style.cssText = `margin-top:14px;padding:10px 14px;border-radius:8px;font-size:.875rem;background:${correct?'rgba(52,211,153,0.1)':'rgba(239,68,68,0.1)'};color:${correct?'#34d399':'#f87171'};border:1px solid ${correct?'#34d399':'#ef4444'};`;
+      feedback.textContent = correct ? '✅ Correct!' : `❌ Wrong — correct answer: ${q.options[q.correct]}`;
+      document.querySelector('.game-modal > div').appendChild(feedback);
+      setTimeout(() => { closeGameModal(); renderVSQuestion(qi+1); }, 1400);
     }
 
     // Settings function
