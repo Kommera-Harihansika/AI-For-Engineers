@@ -1406,7 +1406,7 @@
       btn.textContent = 'Configuring...';
       
       try {
-        const response = await fetch('/api/configure-ai', {
+        const response = await fetch('http://localhost:8080/api/configure-ai', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ api_key: apiKey })
@@ -1435,7 +1435,7 @@
       const status = document.getElementById('apiStatus');
       
       try {
-        const response = await fetch('/api/ai-status');
+        const response = await fetch('http://localhost:8080/api/ai-status');
         const result = await response.json();
         
         if (result.ai_enabled) {
@@ -1712,7 +1712,7 @@
       }
       
       try {
-        const res = await fetch('/api/solve', {
+        const res = await fetch('http://localhost:8080/api/solve', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ question: q }),
